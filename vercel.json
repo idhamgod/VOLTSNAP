@@ -1,6 +1,22 @@
 {
     "rewrites": [
         {
+            "source": "/main/assets/(.*)",
+            "destination": "/assets/$1"
+        },
+        {
+            "source": "/main/VOLTSNAP/(.*)",
+            "destination": "/VOLTSNAP/$1"
+        },
+        {
+            "source": "/main/portofolio/(.*)",
+            "destination": "/portofolio/$1"
+        },
+        {
+            "source": "/main/vite.svg",
+            "destination": "/vite.svg"
+        },
+        {
             "source": "/main/(.*)",
             "destination": "/index.html"
         },
