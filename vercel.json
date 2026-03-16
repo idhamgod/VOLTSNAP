@@ -1,0 +1,19 @@
+{
+    "rewrites": [
+        {
+            "source": "/main/(.*)",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/main",
+            "destination": "/index.html"
+        }
+    ],
+    "redirects": [
+        {
+            "source": "/",
+            "destination": "/main",
+            "permanent": true
+        }
+    ]
+}
