@@ -31,7 +31,7 @@ const Navbar = ({ isScrolled }) => {
           className="flex items-center gap-3 cursor-pointer"
         >
           <img
-            src={`${import.meta.env.BASE_URL}VOLTSNAP/4x/voltsnap.png`}
+            src="/VOLTSNAP/4x/voltsnap.png"
             alt="Voltsnap Logo"
             className="w-8 h-8 sm:w-12 sm:h-12 object-contain"
           />
