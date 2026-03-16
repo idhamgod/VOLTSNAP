@@ -1,19 +1,11 @@
 {
     "rewrites": [
         {
-            "source": "/main/VOLTSNAP/(.*)",
-            "destination": "/VOLTSNAP/$1"
+            "source": "/main/(.*)",
+            "destination": "/index.html"
         },
         {
-            "source": "/main/portofolio/(.*)",
-            "destination": "/portofolio/$1"
-        },
-        {
-            "source": "/main/assets/(.*)",
-            "destination": "/assets/$1"
-        },
-        {
-            "source": "/main/((?!assets/|VOLTSNAP/|portofolio/|.*\\.).*)",
+            "source": "/main",
             "destination": "/index.html"
         }
     ],
