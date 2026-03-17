@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 const HomePage = lazy(() => import('./pages/HomePage'));
 const PortfolioPage = lazy(() => import('./pages/PortfolioPage'));
 const ServiceDetailPage = lazy(() => import('./pages/ServiceDetailPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 // --- Scroll to top on route change ---
 const ScrollToTop = () => {
@@ -119,6 +120,7 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/portfolio" element={<PortfolioPage />} />
             <Route path="/services/:serviceId" element={<ServiceDetailPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>
       </main>
