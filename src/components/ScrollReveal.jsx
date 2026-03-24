@@ -7,10 +7,7 @@ const ScrollReveal = ({ children, className = "", delay = 0 }) => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
+        setIsVisible(entry.isIntersecting);
       },
       { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
     );

@@ -17,18 +17,19 @@
             "destination": "/vite.svg"
         },
         {
-            "source": "/main/(.*)",
-            "destination": "/index.html"
-        },
-        {
-            "source": "/main",
+            "source": "/(.*)",
             "destination": "/index.html"
         }
     ],
     "redirects": [
         {
             "source": "/",
-            "destination": "/main",
+            "destination": "/main/",
+            "permanent": true
+        },
+        {
+            "source": "/(?!main|assets|vite\\.svg)(.*)",
+            "destination": "/main/$1",
             "permanent": true
         }
     ]

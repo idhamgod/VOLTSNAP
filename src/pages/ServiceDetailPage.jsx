@@ -1,17 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, Check, MessageCircle } from 'lucide-react';
+import { ArrowLeft, Check, ArrowRight, Zap } from 'lucide-react';
 import ScrollReveal from '../components/ScrollReveal';
-import ContactModal from '../components/ContactModal';
 import { servicesData } from '../data';
 
-const ServiceDetailPage = () => {
+const ServiceDetailPage = ({ onOpenContact }) => {
   const { serviceId } = useParams();
   const service = servicesData.find(s => s.id === serviceId);
-
-  // State for modal
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedTier, setSelectedTier] = useState('');
 
   if (!service) {
     return (
@@ -22,111 +17,127 @@ const ServiceDetailPage = () => {
     );
   }
 
-  const openContactForm = (tierName) => {
-    setSelectedTier(tierName || '');
-    setIsModalOpen(true);
-  };
-
   return (
-    <div className="pt-32 pb-20 max-w-7xl mx-auto px-6 animate-fade-in">
-      <Link
-        to="/"
-        className="flex items-center gap-2 text-slate-400 hover:text-white mb-8 group transition-colors"
-      >
-        <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-        Back to Services
-      </Link>
-
-      <div className="text-center mb-16">
-        <div className={`w-16 h-16 rounded-2xl ${service.imageColor} mx-auto flex items-center justify-center mb-6`}>
-          {React.cloneElement(service.icon, { className: "w-8 h-8 text-white" })}
-        </div>
-        <h1 className="text-4xl md:text-6xl font-black text-white mb-4 uppercase tracking-tight">{service.title}</h1>
-        <p className="text-xl text-slate-400">{service.tagline}</p>
+    <div className="pt-32 pb-20 animate-fade-in">
+      {/* Back */}
+      <div className="max-w-7xl mx-auto px-6">
+        <Link
+          to="/"
+          className="flex items-center gap-2 text-slate-400 hover:text-white mb-12 group transition-colors"
+        >
+          <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+          Back to Services
+        </Link>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-6 lg:gap-8 group/tiers">
-        {service.tiers.map((tier, idx) => (
-          <ScrollReveal key={idx} delay={idx * 150} className="h-full">
-            <div
-              className={`
-                relative p-8 rounded-3xl flex flex-col h-full border transition-all duration-500 ease-[cubic-bezier(0.25,0.4,0.25,1)]
-                ${tier.isPopular
-                  ? 'bg-[#0E0E10] border-blue-500 shadow-[0_0_30px_rgba(59,130,246,0.5)] z-10'
-                  : 'bg-[#0E0E10]/50 border-white/5 hover:border-white/10'
-                }
-                /* Focus Animation */
-                group-hover/tiers:opacity-40 group-hover/tiers:scale-95 group-hover/tiers:blur-[2px]
-                hover:!opacity-100 hover:!scale-105 hover:!blur-none hover:!z-20 hover:border-blue-500/50 hover:shadow-[0_0_40px_rgba(59,130,246,0.3)]
-              `}
-            >
-              {tier.isPopular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-xs font-bold uppercase tracking-widest py-1 px-4 rounded-full border border-blue-400 shadow-[0_0_20px_rgba(59,130,246,0.6)]">
-                  Best Value
+      {/* Hero */}
+      <div className="max-w-7xl mx-auto px-6 mb-20">
+        <div className="text-center">
+          <div className={`w-20 h-20 rounded-2xl ${service.imageColor} mx-auto flex items-center justify-center mb-8`}>
+            {React.cloneElement(service.icon, { className: "w-10 h-10 text-white" })}
+          </div>
+          <h1 className="text-4xl md:text-7xl font-black text-white mb-6 uppercase tracking-tight">{service.title}</h1>
+          <p className="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed">{service.tagline}</p>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid lg:grid-cols-2 gap-16 items-start">
+          {/* Left: Description + Features */}
+          <div>
+            <ScrollReveal>
+              <div className="mb-12">
+                <h2 className="text-2xl font-bold text-white mb-6">What's Included</h2>
+                <p className="text-slate-400 text-lg leading-relaxed mb-8">
+                  {service.description}
+                </p>
+
+                <div className="space-y-4">
+                  {service.features.map((feat, i) => (
+                    <div key={i} className="flex items-start gap-4 group">
+                      <div className="w-6 h-6 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-purple-500/30 transition-colors">
+                        <Check className="w-3.5 h-3.5 text-purple-400" />
+                      </div>
+                      <span className="text-slate-300 text-base">{feat}</span>
+                    </div>
+                  ))}
                 </div>
-              )}
+              </div>
+            </ScrollReveal>
+          </div>
 
-              <div className="mb-8">
-                <h3 className={`text-sm font-bold uppercase tracking-widest mb-2 ${tier.isPopular ? 'text-blue-400' : 'text-slate-500'}`}>
-                  {tier.name}
-                </h3>
-                <div className="text-2xl font-bold text-white mb-2 italic font-mokoto-style">{tier.alias}</div>
-
-                <div className="mb-4">
-                  {tier.originalPrice && (
-                    <span className="text-sm text-slate-500 line-through decoration-slate-500/50 block mb-1">
-                      {tier.originalPrice}
-                    </span>
-                  )}
-                  <div className={`font-bold ${tier.isPopular ? 'text-xl' : 'text-base'} ${tier.originalPrice ? 'text-blue-300 drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]' : 'text-white'}`}>
-                    {tier.price}
+          {/* Right: CTA Card */}
+          <div className="lg:sticky lg:top-32">
+            <ScrollReveal delay={200}>
+              <div className="bg-[#0E1012] border border-white/10 rounded-3xl p-8 md:p-10 relative overflow-hidden">
+                <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-20`}></div>
+                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+                
+                <div className="relative z-10">
+                  <div className="mb-8">
+                    <h3 className="text-2xl font-bold text-white mb-3">Interested in {service.title}?</h3>
+                    <p className="text-slate-400 text-base leading-relaxed">
+                      Every project is unique. Tell us about yours and we'll create a custom plan and quote tailored to your needs.
+                    </p>
                   </div>
+
+                  <div className="space-y-4 mb-8 text-sm text-slate-400">
+                    <div className="flex items-center gap-3">
+                      <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                      <span>Custom quote based on your scope</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                      <span>Response within 24 hours</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                      <span>No commitment required</span>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => onOpenContact?.(service.title)}
+                    className="group relative w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white py-4 rounded-xl font-bold uppercase tracking-wider transition-all duration-300 shadow-[0_0_20px_rgba(147,51,234,0.3)] hover:shadow-[0_0_30px_rgba(147,51,234,0.6)] flex items-center justify-center gap-3 overflow-hidden"
+                  >
+                    <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
+                    <Zap className="w-5 h-5 relative z-10" />
+                    <span className="relative z-10">Get a Custom Quote</span>
+                  </button>
                 </div>
-
-                <p className="text-sm text-slate-400 h-10">{tier.bestFor}</p>
               </div>
+            </ScrollReveal>
+          </div>
+        </div>
+      </div>
 
-              <div className="space-y-4 mb-8 flex-1">
-                {tier.features.map((feat, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <Check className={`w-5 h-5 shrink-0 ${tier.isPopular ? 'text-blue-500' : 'text-slate-600'}`} />
-                    <span className="text-sm text-slate-300">{feat}</span>
-                  </div>
-                ))}
-              </div>
-
-              <button
-                onClick={() => openContactForm(tier?.name)}
-                className={`
-    group relative w-full py-4 rounded-xl font-bold text-sm uppercase tracking-wider transition-all duration-300 overflow-hidden block text-center cursor-pointer z-50
-    ${((typeof tier !== 'undefined' && tier?.isPopular) || (typeof service !== 'undefined' && service?.isPopular))
-                    ? 'bg-blue-600 text-white border-blue-600 shadow-[0_0_20px_rgba(37,99,235,0.5)] hover:bg-blue-700 hover:shadow-[0_0_30px_rgba(37,99,235,0.7)]'
-                    : 'bg-white/5 text-white border-white/10 hover:bg-white hover:text-black hover:border-white'
-                  }
-  `}>{/* ANIMASI SHINE */}
-                {((typeof tier !== 'undefined' && tier?.isPopular) || (typeof service !== 'undefined' && service?.isPopular)) && (
-                  <div
-                    className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent -skew-x-12 -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-[1200ms] ease-in-out pointer-events-none"
-                  />
-                )}
-
-                <span className="relative z-10 flex items-center justify-center gap-2 pointer-events-none">
-                  Book Consultation
-                  <MessageCircle className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-                </span>
-              </button>
-            </div>
-          </ScrollReveal>
-        ))
-        }
-      </div >
-      <ContactModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        serviceName={service.title}
-        tierName={selectedTier}
-      />
-    </div >
+      {/* Other Services */}
+      <div className="max-w-7xl mx-auto px-6 mt-32">
+        <ScrollReveal>
+          <h2 className="text-2xl font-bold text-white mb-8">Other Services</h2>
+        </ScrollReveal>
+        <div className="grid md:grid-cols-2 gap-6">
+          {servicesData.filter(s => s.id !== serviceId).map((s, i) => (
+            <ScrollReveal key={s.id} delay={i * 100}>
+              <Link
+                to={`/services/${s.id}`}
+                className="group flex items-center gap-6 p-6 rounded-2xl bg-[#0E1012] border border-white/5 hover:border-white/15 transition-all duration-300"
+              >
+                <div className={`w-14 h-14 rounded-xl ${s.imageColor} flex items-center justify-center shrink-0`}>
+                  {React.cloneElement(s.icon, { className: "w-7 h-7 text-white" })}
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold text-white mb-1">{s.title}</h3>
+                  <p className="text-slate-400 text-sm">{s.tagline}</p>
+                </div>
+                <ArrowRight className="w-5 h-5 text-white/20 group-hover:text-white/60 group-hover:translate-x-1 transition-all" />
+              </Link>
+            </ScrollReveal>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
 
