@@ -26,11 +26,6 @@
             "source": "/",
             "destination": "/main/",
             "permanent": true
-        },
-        {
-            "source": "/(?!main|assets|vite\\.svg)(.*)",
-            "destination": "/main/$1",
-            "permanent": true
         }
     ]
 }
