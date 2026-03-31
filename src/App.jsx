@@ -47,7 +47,7 @@ const App = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#08090A] text-slate-300 font-sans selection:bg-purple-500/30">
+    <div className="min-h-screen bg-[#08090A] text-slate-300 font-sans selection:bg-purple-500/30 overflow-x-hidden w-full relative">
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@600;800;900&display=swap');
          
